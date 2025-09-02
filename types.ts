@@ -1,13 +1,29 @@
-export interface Virtue {
+export interface Philosopher {
   id: string;
   name: string;
+  virtue: string;
   description: string;
   icon: JSX.Element;
   color: string;
   hoverColor: string;
 }
 
-export interface Story {
+export interface StoryContent {
   title: string;
   paragraphs: string[];
+}
+
+export interface Story {
+  pt: StoryContent;
+  en_gb: StoryContent;
+}
+
+export interface StoryCustomization {
+  age: number;
+  childName: string;
+  includePrincess: boolean;
+  princessName?: string;
+  includeElf: boolean;
+  elfName?: string;
+  secondaryPhilosopherId?: string;
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Virtue } from './types';
+import { Philosopher } from './types';
 
 // Heroicons - https://heroicons.com/
 const HeartIcon = () => (
@@ -34,43 +34,48 @@ const GiftIcon = () => (
 );
 
 
-export const VIRTUES: Virtue[] = [
+export const PHILOSOPHERS: Philosopher[] = [
   {
-    id: 'courage',
-    name: 'Coragem',
-    description: 'Enfrentar medos com bravura e fazer a coisa certa, mesmo quando é difícil.',
-    icon: <ShieldCheckIcon />,
-    color: 'bg-red-100 border-red-300 text-red-800',
-    hoverColor: 'hover:bg-red-200 hover:border-red-400',
-  },
-  {
-    id: 'wisdom',
-    name: 'Sabedoria',
-    description: 'Compreender o mundo, tomar boas decisões e aprender com as experiências.',
+    id: 'socrates',
+    name: 'Sócrates',
+    virtue: 'Sabedoria',
+    description: 'Ensina a fazer perguntas e a procurar sempre a verdade para tomar boas decisões.',
     icon: <SparklesIcon />,
     color: 'bg-blue-100 border-blue-300 text-blue-800',
     hoverColor: 'hover:bg-blue-200 hover:border-blue-400',
   },
   {
-    id: 'temperance',
-    name: 'Temperança',
-    description: 'Praticar o autocontrole e o equilíbrio, não exagerando em nada.',
+    id: 'epictetus',
+    name: 'Epicteto',
+    virtue: 'Coragem',
+    description: 'Mostra como ser forte por dentro e enfrentar desafios sem medo, focando no que podemos controlar.',
+    icon: <ShieldCheckIcon />,
+    color: 'bg-red-100 border-red-300 text-red-800',
+    hoverColor: 'hover:bg-red-200 hover:border-red-400',
+  },
+  {
+    id: 'aristotle',
+    name: 'Aristóteles',
+    virtue: 'Temperança',
+    description: 'Explica a importância do equilíbrio, de não ter nem muito nem pouco de nada.',
     icon: <HeartIcon />,
     color: 'bg-green-100 border-green-300 text-green-800',
     hoverColor: 'hover:bg-green-200 hover:border-green-400',
   },
   {
-    id: 'justice',
-    name: 'Justiça',
-    description: 'Ser justo e honesto com todos, garantindo que cada um receba o que merece.',
+    id: 'plato',
+    name: 'Platão',
+    virtue: 'Justiça',
+    description: 'Ajuda a entender o que é ser justo e honesto com todos os amigos e na comunidade.',
     icon: <ScaleIcon />,
     color: 'bg-yellow-100 border-yellow-300 text-yellow-800',
     hoverColor: 'hover:bg-yellow-200 hover:border-yellow-400',
   },
   {
-    id: 'generosity',
-    name: 'Generosidade',
-    description: 'Partilhar o que temos com os outros de bom grado e com um coração aberto.',
+    id: 'diotima',
+    name: 'Diotima',
+    virtue: 'Generosidade',
+    description: 'Inspira a partilhar amor e bondade, criando coisas belas para o mundo.',
     icon: <GiftIcon />,
     color: 'bg-purple-100 border-purple-300 text-purple-800',
     hoverColor: 'hover:bg-purple-200 hover:border-purple-400',

@@ -1,40 +1,24 @@
 export interface Philosopher {
   id: string;
-  name: string;
-  virtue: string;
-  description: string;
+  name_en: string;
+  name_pt: string;
+  virtue_en: string;
+  virtue_pt: string;
+  description_en: string;
+  description_pt: string;
   icon: JSX.Element;
   color: string;
   hoverColor: string;
 }
 
 export interface StoryContent {
-  title: string;
-  paragraphs: string[];
-}
-
-export interface Story {
-  pt: StoryContent;
-  en_gb: StoryContent;
+  title_en: string;
+  paragraphs_en: string[];
+  title_pt: string;
+  paragraphs_pt: string[];
 }
 
 export interface StoryCustomization {
   age: number;
   childName: string;
-  debateTopic?: string;
-  storyTheme?: string;
-  includePrincess: boolean;
-  princessName?: string;
-  includeElf: boolean;
-  elfName?: string;
-  secondaryPhilosopherId?: string;
-}
-
-export interface PreMadeStory {
-  id: string;
-  title: string;
-  description: string;
-  icon: JSX.Element;
-  story: Story;
-  videoUrl: string;
 }

@@ -1,6 +1,55 @@
 import React from 'react';
 import { Philosopher } from './types';
 
+// UI Translations
+export const translations = {
+  en: {
+    headerTitle: "Wise Tales for Kids",
+    headerSubtitle: "The magic of Greek philosophy in enchanting stories",
+    protagonistTitle: "The Protagonist",
+    protagonistDescription: "Who is this magical story for?",
+    childNamePlaceholder: "Child's Name",
+    agePlaceholder: "Age (2-12)",
+    guideTitle: "The Guide of Wisdom",
+    guideDescription: "Who will guide the hero or heroine in our story?",
+    generateButton: "Generate Story!",
+    generatingButton: "Creating Magic...",
+    errorPrefix: "Please fill in the child's name, a valid age (2-12), and choose a philosopher.",
+    storyTitle: "Your Magical Story",
+    listen_en: "Listen to Story",
+    stop_en: "Stop Narration",
+    listen_pt: "Ouvir a História",
+    stop_pt: "Parar Narração",
+    view_en: "English",
+    view_pt: "Português",
+    view_split: "Side-by-Side",
+    footer: `© ${new Date().getFullYear()} Wise Tales. Created with inspiration and AI.`
+  },
+  pt: {
+    headerTitle: "Contos Sábios para Crianças",
+    headerSubtitle: "A magia da filosofia grega em histórias encantadoras",
+    protagonistTitle: "O Protagonista",
+    protagonistDescription: "Para quem é esta história mágica?",
+    childNamePlaceholder: "Nome da Criança",
+    agePlaceholder: "Idade (2-12)",
+    guideTitle: "O Guia da Sabedoria",
+    guideDescription: "Quem guiará o herói ou heroína em nossa história?",
+    generateButton: "Gerar História!",
+    generatingButton: "Criando Magia...",
+    errorPrefix: "Por favor, preencha o nome da criança, uma idade válida (2-12) e escolha um filósofo.",
+    storyTitle: "Sua História Mágica",
+    listen_en: "Listen to Story",
+    stop_en: "Stop Narration",
+    listen_pt: "Ouvir a História",
+    stop_pt: "Parar Narração",
+    view_en: "Inglês",
+    view_pt: "Português",
+    view_split: "Lado a Lado",
+    footer: `© ${new Date().getFullYear()} Contos Sábios. Criado com inspiração e IA.`
+  }
+};
+
+
 // Heroicons - https://heroicons.com/
 const HeartIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12">
@@ -35,45 +84,60 @@ const SunIcon = () => (
 export const PHILOSOPHERS: Philosopher[] = [
   {
     id: 'socrates',
-    name: 'Menino Sócrates',
-    virtue: 'Curiosidade',
-    description: 'Fazer perguntas para encontrar a verdade.',
+    name_en: 'Socrates the Questioner',
+    name_pt: 'Sócrates, o Questionador',
+    virtue_en: 'Curiosity',
+    virtue_pt: 'Curiosidade',
+    description_en: 'Asking questions to find the truth.',
+    description_pt: 'Fazer perguntas para encontrar a verdade.',
     icon: <AcademicCapIcon />,
     color: 'bg-blue-100',
     hoverColor: 'hover:bg-blue-200'
   },
   {
     id: 'plato',
-    name: 'Mago Platão',
-    virtue: 'Justiça',
-    description: 'Fazer o que é certo para todos.',
+    name_en: 'Plato the Just',
+    name_pt: 'Platão, o Justo',
+    virtue_en: 'Justice',
+    virtue_pt: 'Justiça',
+    description_en: 'Doing what is right for everyone.',
+    description_pt: 'Fazer o que é certo para todos.',
     icon: <ScaleIcon />,
     color: 'bg-purple-100',
     hoverColor: 'hover:bg-purple-200'
   },
   {
     id: 'aristotle',
-    name: 'Guardião Aristóteles',
-    virtue: 'Coragem',
-    description: 'Ser corajoso mesmo quando se tem medo.',
+    name_en: 'Aristotle the Brave',
+    name_pt: 'Aristóteles, o Corajoso',
+    virtue_en: 'Courage',
+    virtue_pt: 'Coragem',
+    description_en: 'Being brave even when you are scared.',
+    description_pt: 'Ser corajoso mesmo quando se está com medo.',
     icon: <ShieldCheckIcon />,
     color: 'bg-red-100',
     hoverColor: 'hover:bg-red-200'
   },
   {
     id: 'epicurus',
-    name: 'Alegre Epicuro',
-    virtue: 'Amizade',
-    description: 'A importância de partilhar e cuidar dos amigos.',
+    name_en: 'Epicurus the Kind',
+    name_pt: 'Epicuro, o Gentil',
+    virtue_en: 'Friendship',
+    virtue_pt: 'Amizade',
+    description_en: 'The importance of sharing and caring for friends.',
+    description_pt: 'A importância de compartilhar e cuidar dos amigos.',
     icon: <HeartIcon />,
     color: 'bg-green-100',
     hoverColor: 'hover:bg-green-200'
   },
   {
     id: 'diogenes',
-    name: 'Aventureiro Diógenes',
-    virtue: 'Honestidade',
-    description: 'Ser verdadeiro e simples de coração.',
+    name_en: 'Diogenes the Honest',
+    name_pt: 'Diógenes, o Honesto',
+    virtue_en: 'Honesty',
+    virtue_pt: 'Honestidade',
+    description_en: 'Being true and simple at heart.',
+    description_pt: 'Ser verdadeiro e simples de coração.',
     icon: <SunIcon />,
     color: 'bg-yellow-100',
     hoverColor: 'hover:bg-yellow-200'

@@ -1,9 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Story } from '../types';
+import { StoryContent } from '../types';
 
 interface StoryDisplayProps {
-  story: Story | null;
-  videoUrl: string | null;
+  story: StoryContent | null;
+  translations: {
+    storyTitle: string;
+    listen_en: string;
+    stop_en: string;
+    listen_pt: string;
+    stop_pt: string;
+    view_en: string;
+    view_pt: string;
+    view_split: string;
+  };
 }
 
 const SpeakerWaveIcon = () => (
@@ -19,95 +28,101 @@ const StopCircleIcon = () => (
     </svg>
 );
 
+const LanguageViewButton: React.FC<{ onClick: () => void; isActive: boolean; children: React.ReactNode }> = ({ onClick, isActive, children }) => (
+    <button
+        onClick={onClick}
+        className={`px-4 py-2 text-sm font-semibold rounded-full transition-colors ${isActive ? 'bg-amber-800 text-white' : 'bg-amber-200 text-amber-800 hover:bg-amber-300'}`}
+    >
+        {children}
+    </button>
+);
 
-const StoryDisplay: React.FC<StoryDisplayProps> = ({ story, videoUrl }) => {
-  const [activeLang, setActiveLang] = useState<'pt' | 'en_gb'>('pt');
-  const [isSpeaking, setIsSpeaking] = useState(false);
+const StoryDisplay: React.FC<StoryDisplayProps> = ({ story, translations }) => {
+  const [isSpeakingEn, setIsSpeakingEn] = useState(false);
+  const [isSpeakingPt, setIsSpeakingPt] = useState(false);
+  const [view, setView] = useState<'split' | 'en' | 'pt'>('split');
 
-  // Cleanup speech synthesis on component unmount
   useEffect(() => {
     return () => {
       if (window.speechSynthesis.speaking) {
         window.speechSynthesis.cancel();
       }
     };
-  }, []);
+  }, [story]);
 
-  if (!story) {
-    return null;
-  }
-  
-  const handleToggleAudio = () => {
-    if (isSpeaking) {
-      window.speechSynthesis.cancel();
-      setIsSpeaking(false);
-      return;
-    }
+  if (!story) return null;
 
-    const currentContent = story[activeLang];
-    const textToSpeak = `${currentContent.title}. ${currentContent.paragraphs.join(' ')}`;
-    const utterance = new SpeechSynthesisUtterance(textToSpeak);
+  const handleToggleAudio = (lang: 'en' | 'pt') => {
+    const isCurrentlySpeaking = lang === 'en' ? isSpeakingEn : isSpeakingPt;
     
-    utterance.lang = activeLang === 'pt' ? 'pt-BR' : 'en-GB';
-    utterance.onstart = () => setIsSpeaking(true);
-    utterance.onend = () => setIsSpeaking(false);
-    utterance.onerror = () => setIsSpeaking(false);
+    // Always stop any current speech
+    window.speechSynthesis.cancel();
+    setIsSpeakingEn(false);
+    setIsSpeakingPt(false);
+
+    if (isCurrentlySpeaking) return;
+
+    const textToSpeak = lang === 'en'
+      ? `${story.title_en}. ${story.paragraphs_en.join(' ')}`
+      : `${story.title_pt}. ${story.paragraphs_pt.join(' ')}`;
+    
+    const utterance = new SpeechSynthesisUtterance(textToSpeak);
+    utterance.lang = lang === 'en' ? 'en-GB' : 'pt-BR';
+    
+    const setSpeaking = lang === 'en' ? setIsSpeakingEn : setIsSpeakingPt;
+    utterance.onstart = () => setSpeaking(true);
+    utterance.onend = () => setSpeaking(false);
+    utterance.onerror = () => setSpeaking(false);
 
     window.speechSynthesis.speak(utterance);
   };
-  
-  const currentStory = story[activeLang];
+
+  const StoryContentComponent: React.FC<{ title: string, paragraphs: string[] }> = ({ title, paragraphs }) => (
+    <div>
+        <h3 className="text-3xl md:text-4xl font-bold text-amber-900 text-center mb-6">{title}</h3>
+        <div className="prose prose-lg max-w-none text-gray-700 space-y-4">
+            {paragraphs.map((p, index) => <p key={index}>{p}</p>)}
+        </div>
+    </div>
+  );
 
   return (
     <div className="mt-12">
-      <h2 className="text-3xl font-bold text-amber-800 text-center mb-8">O Seu Conto Mágico Animado</h2>
+      <h2 className="text-3xl font-bold text-amber-800 text-center mb-8">{translations.storyTitle}</h2>
       <div className="bg-white rounded-2xl shadow-xl p-6 md:p-10 lg:p-12 border-4 border-amber-200">
-        <div className="max-w-3xl mx-auto">
-          {videoUrl && (
-            <div className="mb-8 rounded-lg overflow-hidden shadow-lg border-2 border-amber-100 aspect-video">
-              <video 
-                src={videoUrl} 
-                className="w-full h-full object-cover" 
-                controls 
-                autoPlay 
-                loop
-                muted // Autoplay with sound is often blocked by browsers
-              />
-            </div>
-          )}
+        
+        <div className="flex justify-center items-center gap-4 mb-6">
+            <LanguageViewButton onClick={() => setView('en')} isActive={view === 'en'}>{translations.view_en}</LanguageViewButton>
+            <LanguageViewButton onClick={() => setView('pt')} isActive={view === 'pt'}>{translations.view_pt}</LanguageViewButton>
+            <LanguageViewButton onClick={() => setView('split')} isActive={view === 'split'}>{translations.view_split}</LanguageViewButton>
+        </div>
 
-          <div className="text-center mb-6">
-            <button
-                onClick={handleToggleAudio}
-                className="inline-flex items-center justify-center bg-amber-100 text-amber-800 font-bold px-6 py-3 rounded-full shadow-md hover:bg-amber-200 transition-transform transform hover:scale-105 duration-300 disabled:bg-gray-200 disabled:cursor-not-allowed"
-                disabled={!window.speechSynthesis}
-            >
-                {isSpeaking ? <StopCircleIcon /> : <SpeakerWaveIcon />}
-                {isSpeaking ? 'Parar Narração' : 'Ouvir História'}
-            </button>
-          </div>
+        <div className="flex justify-center items-center gap-4 mb-8">
+          <button
+            onClick={() => handleToggleAudio('en')}
+            className="inline-flex items-center justify-center bg-amber-100 text-amber-800 font-bold px-4 py-2 rounded-full shadow-md hover:bg-amber-200 transition-transform transform hover:scale-105 duration-300 disabled:bg-gray-200 disabled:cursor-not-allowed"
+            disabled={!window.speechSynthesis}
+          >
+            {isSpeakingEn ? <StopCircleIcon /> : <SpeakerWaveIcon />}
+            {isSpeakingEn ? translations.stop_en : translations.listen_en}
+          </button>
+          <button
+            onClick={() => handleToggleAudio('pt')}
+            className="inline-flex items-center justify-center bg-amber-100 text-amber-800 font-bold px-4 py-2 rounded-full shadow-md hover:bg-amber-200 transition-transform transform hover:scale-105 duration-300 disabled:bg-gray-200 disabled:cursor-not-allowed"
+            disabled={!window.speechSynthesis}
+          >
+            {isSpeakingPt ? <StopCircleIcon /> : <SpeakerWaveIcon />}
+            {isSpeakingPt ? translations.stop_pt : translations.listen_pt}
+          </button>
+        </div>
 
-          <div className="flex justify-center border-b-2 border-amber-200 mb-6">
-            <button 
-                onClick={() => setActiveLang('pt')} 
-                className={`px-6 py-2 text-lg font-semibold rounded-t-lg transition-colors duration-300 ${activeLang === 'pt' ? 'bg-amber-200 text-amber-900' : 'text-gray-500 hover:bg-amber-50'}`}
-            >
-                Português
-            </button>
-            <button 
-                onClick={() => setActiveLang('en_gb')} 
-                className={`px-6 py-2 text-lg font-semibold rounded-t-lg transition-colors duration-300 ${activeLang === 'en_gb' ? 'bg-amber-200 text-amber-900' : 'text-gray-500 hover:bg-amber-50'}`}
-            >
-                English (UK)
-            </button>
-          </div>
-
-          <h3 className="text-3xl md:text-4xl font-bold text-amber-900 text-center mb-6">{currentStory.title}</h3>
-          <div className="prose prose-lg max-w-none text-gray-700 space-y-4">
-            {currentStory.paragraphs.map((p, index) => (
-              <p key={index}>{p}</p>
-            ))}
-          </div>
+        <div className={`grid gap-10 ${view === 'split' ? 'md:grid-cols-2' : 'grid-cols-1'}`}>
+            {(view === 'en' || view === 'split') && (
+                <StoryContentComponent title={story.title_en} paragraphs={story.paragraphs_en} />
+            )}
+            {(view === 'pt' || view === 'split') && (
+                <StoryContentComponent title={story.title_pt} paragraphs={story.paragraphs_pt} />
+            )}
         </div>
       </div>
     </div>

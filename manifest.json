@@ -1,0 +1,21 @@
+{
+  "name": "Wise Tales for Kids",
+  "short_name": "Wise Tales",
+  "description": "Generate charming animated stories for children, with Greek philosophers as guides. Select a philosopher, enter the child's age, and watch ancient wisdom come to life in a magical tale.",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFBEB",
+  "theme_color": "#FFFBEB"
+}

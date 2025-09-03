@@ -28,19 +28,15 @@ const PhilosopherCard: React.FC<{ philosopher: Philosopher; isSelected: boolean;
 
 const PhilosopherSelector: React.FC<PhilosopherSelectorProps> = ({ selectedPhilosopher, onSelectPhilosopher }) => {
   return (
-    <div className="mb-8">
-      <h2 className="text-3xl font-bold text-amber-800 text-center mb-2">1. Escolha um Filósofo Guia</h2>
-      <p className="text-center text-amber-700 mb-6">Quem irá guiar o herói ou heroína na nossa história?</p>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
-        {PHILOSOPHERS.map((philosopher) => (
-          <PhilosopherCard
-            key={philosopher.id}
-            philosopher={philosopher}
-            isSelected={selectedPhilosopher?.id === philosopher.id}
-            onSelect={() => onSelectPhilosopher(philosopher)}
-          />
-        ))}
-      </div>
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
+      {PHILOSOPHERS.map((philosopher) => (
+        <PhilosopherCard
+          key={philosopher.id}
+          philosopher={philosopher}
+          isSelected={selectedPhilosopher?.id === philosopher.id}
+          onSelect={() => onSelectPhilosopher(philosopher)}
+        />
+      ))}
     </div>
   );
 };

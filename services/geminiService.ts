@@ -12,14 +12,30 @@ const storyGenerationModel = 'gemini-2.5-flash';
 const videoGenerationModel = 'veo-2.0-generate-001';
 
 export const generateStory = async (philosopher: Philosopher, customization: StoryCustomization): Promise<Story> => {
-  const { age, childName, includePrincess, princessName, includeElf, elfName, secondaryPhilosopherId } = customization;
+  const { age, childName, storyTheme, debateTopic, includePrincess, princessName, includeElf, elfName, secondaryPhilosopherId } = customization;
 
-  let storyPrompt = `Crie uma história infantil **muito curta e concisa** (cerca de 3 parágrafos) para uma criança de ${age} anos chamada ${childName}.
+  let storyPrompt = '';
+
+  if (debateTopic) {
+      storyPrompt = `Crie uma história infantil **muito curta e concisa** (cerca de 3-4 parágrafos) para uma criança de ${age} anos chamada ${childName}.
+O personagem principal é ${childName}, que encontra o filósofo Menino Sócrates.
+A história deve ser um diálogo socrático sobre o tema: "${debateTopic}".
+Sócrates **não deve dar respostas diretas**. Em vez disso, ele deve fazer perguntas simples e orientadoras para ajudar ${childName} a explorar o tema por conta própria e chegar às suas próprias conclusões.
+A história deve terminar com ${childName} a ter uma nova perspetiva sobre o tema, graças à conversa com Sócrates.
+O tom deve ser curioso, gentil e encorajador.
+Adapte a complexidade do diálogo para a idade de ${age} anos.`;
+  } else {
+      storyPrompt = `Crie uma história infantil **muito curta e concisa** (cerca de 3 parágrafos) para uma criança de ${age} anos chamada ${childName}.
 O personagem principal é ${childName}, que é guiado(a) pelo filósofo ${philosopher.name}.
 A história deve ser uma aventura simples que ensine uma lição clara sobre a virtude da "${philosopher.virtue}", que para uma criança significa "${philosopher.description}".
 **Incorpore elementos subtis inspirados no universo de J.R.R. Tolkien. Mencione árvores que brilham com luz própria, reminiscentes de Laurelin e Telperion, e lições sobre coragem e amizade.**
 Adapte a complexidade do vocabulário e da trama para a idade de ${age} anos.
 Inclua um momento na história que mostre como uma boa ação leva a outra.`;
+
+      if (storyTheme) {
+        storyPrompt += `\nA história deve focar-se no tema de "${storyTheme}", mostrando como a virtude do filósofo se aplica a esta situação.`;
+      }
+  }
 
   if (includePrincess && princessName) {
     storyPrompt += ` A história também inclui uma princesa chamada ${princessName}.`;
@@ -27,7 +43,7 @@ Inclua um momento na história que mostre como uma boa ação leva a outra.`;
   if (includeElf && elfName) {
     storyPrompt += ` Um elfo amigável chamado ${elfName} junta-se à aventura.`;
   }
-  if (secondaryPhilosopherId) {
+  if (secondaryPhilosopherId && !debateTopic) { // Secondary philosopher is ignored in debate mode
     const secondPhilosopher = PHILOSOPHERS.find(p => p.id === secondaryPhilosopherId);
     if (secondPhilosopher) {
       storyPrompt += ` O filósofo ${secondPhilosopher.name} também aparece para partilhar a sua sabedoria sobre ${secondPhilosopher.virtue}.`;

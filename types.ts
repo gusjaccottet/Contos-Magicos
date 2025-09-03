@@ -21,9 +21,20 @@ export interface Story {
 export interface StoryCustomization {
   age: number;
   childName: string;
+  debateTopic?: string;
+  storyTheme?: string;
   includePrincess: boolean;
   princessName?: string;
   includeElf: boolean;
   elfName?: string;
   secondaryPhilosopherId?: string;
+}
+
+export interface PreMadeStory {
+  id: string;
+  title: string;
+  description: string;
+  icon: JSX.Element;
+  story: Story;
+  videoUrl: string;
 }

@@ -1,5 +1,5 @@
 import { GoogleGenAI, GenerateContentResponse, Type } from "@google/genai";
-import { Philosopher, StoryContent, StoryCustomization } from '../types';
+import { Philosopher, StoryContent, StoryCustomization, Theme } from '../types';
 
 if (!process.env.API_KEY) {
     throw new Error("API_KEY environment variable not set");
@@ -9,12 +9,13 @@ const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 const storyGenerationModel = 'gemini-2.5-flash';
 
-export const generateStory = async (philosopher: Philosopher, customization: StoryCustomization): Promise<StoryContent> => {
+export const generateStory = async (philosopher: Philosopher, theme: Theme, customization: StoryCustomization): Promise<StoryContent> => {
   const { age, childName } = customization;
 
   const storyPrompt = `Create a very short and concise children's story (about 3 paragraphs) for a ${age}-year-old named ${childName}.
+IMPORTANT: You must use the name "${childName}" exactly as it is written, without adding or changing any characters or accents.
 The main character is ${childName}, who is guided by the philosopher ${philosopher.name_en}.
-The story should be a simple adventure that teaches a clear lesson about the virtue of "${philosopher.virtue_en}", which for a child means "${philosopher.description_en}".
+The story should be a simple adventure that teaches a clear lesson about "${theme.name_en}" (${theme.description_en}). This lesson should be connected to the philosopher's main virtue of "${philosopher.virtue_en}", which for a child means "${philosopher.description_en}".
 Incorporate subtle elements inspired by J.R.R. Tolkien's universe. Mention trees that glow with their own light, reminiscent of Laurelin and Telperion, and lessons about courage and friendship.
 Adapt the complexity of the vocabulary and plot for a ${age}-year-old.
 Include a moment in the story that shows how one good deed leads to another.

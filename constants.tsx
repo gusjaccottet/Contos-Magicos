@@ -1,5 +1,5 @@
 import React from 'react';
-import { Philosopher } from './types';
+import { Philosopher, Theme } from './types';
 
 // UI Translations
 export const translations = {
@@ -12,9 +12,11 @@ export const translations = {
     agePlaceholder: "Age (2-12)",
     guideTitle: "The Guide of Wisdom",
     guideDescription: "Who will guide the hero or heroine in our story?",
+    themeTitle: "The Lesson of the Day",
+    themeDescription: "What valuable lesson will our hero learn today?",
     generateButton: "Generate Story!",
     generatingButton: "Creating Magic...",
-    errorPrefix: "Please fill in the child's name, a valid age (2-12), and choose a philosopher.",
+    errorPrefix: "Please fill in the child's name, a valid age (2-12), choose a philosopher, and select a theme.",
     storyTitle: "Your Magical Story",
     listen_en: "Listen to Story",
     stop_en: "Stop Narration",
@@ -34,9 +36,11 @@ export const translations = {
     agePlaceholder: "Idade (2-12)",
     guideTitle: "O Guia da Sabedoria",
     guideDescription: "Quem guiará o herói ou heroína em nossa história?",
+    themeTitle: "A Lição do Dia",
+    themeDescription: "Que lição valiosa nosso herói ou heroína aprenderá hoje?",
     generateButton: "Gerar História!",
     generatingButton: "Criando Magia...",
-    errorPrefix: "Por favor, preencha o nome da criança, uma idade válida (2-12) e escolha um filósofo.",
+    errorPrefix: "Por favor, preencha o nome da criança, uma idade válida (2-12), escolha um filósofo e selecione um tema.",
     storyTitle: "Sua História Mágica",
     listen_en: "Listen to Story",
     stop_en: "Stop Narration",
@@ -80,6 +84,35 @@ const SunIcon = () => (
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-6.364-.386 1.591-1.591M3 12h2.25m.386-6.364 1.591 1.591" />
     </svg>
 );
+
+const UsersIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m-7.5-2.962 3.996 3.996m0 0a3.001 3.001 0 0 1-5.196 0m5.196 0a3.001 3.001 0 0 1 0 5.196m-5.196 0a3.001 3.001 0 0 1 0-5.196m7.5-3.996-3.996-3.996A3.001 3.001 0 0 1 9 6.728a3.001 3.001 0 0 1 5.196 0 3.001 3.001 0 0 1 0 5.196M12 12.75a3 3 0 0 1-6 0 3 3 0 0 1 6 0Z" />
+    </svg>
+);
+
+const TrophyIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9a9 9 0 1 1 9 0Z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12.75 3.75v11.25l-3-3-3 3V3.75" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="m15.375 18.75-.92-1.5m-3.955 1.5.92-1.5" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 21.75c-2.485 0-4.5-2.015-4.5-4.5V12" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 21.75c2.485 0 4.5-2.015 4.5-4.5V12" />
+    </svg>
+);
+
+const ChatBubbleLeftRightIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193l-3.72-3.72a1.05 1.05 0 0 0-1.485 0l-3.72 3.72a2.123 2.123 0 0 1-2.227 0l-3.72-3.72a1.05 1.05 0 0 0-1.485 0l-2.47 2.47A2.122 2.122 0 0 1 3 16.07V10.607c0-.97.616-1.813 1.5-2.097m16.5 0-2.223-2.223a1.05 1.05 0 0 0-1.485 0l-3.72 3.72a1.05 1.05 0 0 1-1.485 0l-3.72-3.72a1.05 1.05 0 0 0-1.485 0L3.75 8.511m16.5 0c-1.22.406-2.5.6-3.75.6s-2.53-.194-3.75-.6m-7.5 0c.983.324 2.037.5 3.106.5A13.48 13.48 0 0 0 15 9.111m-7.5 0c-1.22.406-2.5.6-3.75.6s-2.53-.194-3.75-.6" />
+    </svg>
+);
+
+const SparklesIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.452-2.452L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.452-2.452L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.452 2.452L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.452 2.452ZM18.259 15.904 18 14.25l-.259 1.654a3.375 3.375 0 0 0-2.452 2.452L14.25 18l1.036.259a3.375 3.375 0 0 0 2.452 2.452L18 21.75l.259-1.035a3.375 3.375 0 0 0 2.452-2.452L21.75 18l-1.035-.259a3.375 3.375 0 0 0-2.452-2.452Z" />
+    </svg>
+);
+
 
 export const PHILOSOPHERS: Philosopher[] = [
   {
@@ -141,5 +174,58 @@ export const PHILOSOPHERS: Philosopher[] = [
     icon: <SunIcon />,
     color: 'bg-yellow-100',
     hoverColor: 'hover:bg-yellow-200'
+  },
+];
+
+export const THEMES: Theme[] = [
+  {
+    id: 'sharing',
+    name_en: 'Sharing',
+    name_pt: 'Compartilhar',
+    description_en: 'Learning to share toys and joys.',
+    description_pt: 'Aprender a dividir os brinquedos e alegrias.',
+    icon: <UsersIcon />,
+    color: 'bg-pink-100',
+    hoverColor: 'hover:bg-pink-200'
+  },
+  {
+    id: 'sportsmanship',
+    name_en: 'Sportsmanship',
+    name_pt: 'Ser bom no esporte',
+    description_en: 'Playing fair and being a good friend.',
+    description_pt: 'Jogar de forma justa e ser um bom amigo.',
+    icon: <TrophyIcon />,
+    color: 'bg-orange-100',
+    hoverColor: 'hover:bg-orange-200'
+  },
+  {
+    id: 'fairness',
+    name_en: 'Being Fair',
+    name_pt: 'Ser Justo',
+    description_en: 'Treating everyone equally.',
+    description_pt: 'Tratar todo mundo de forma igual.',
+    icon: <ScaleIcon />,
+    color: 'bg-teal-100',
+    hoverColor: 'hover:bg-teal-200'
+  },
+  {
+    id: 'respect',
+    name_en: 'Respect',
+    name_pt: 'Respeito',
+    description_en: 'Listening to others and being kind.',
+    description_pt: 'Ouvir os outros e ser gentil.',
+    icon: <ChatBubbleLeftRightIcon />,
+    color: 'bg-indigo-100',
+    hoverColor: 'hover:bg-indigo-200'
+  },
+  {
+    id: 'cleanliness',
+    name_en: 'Cleanliness',
+    name_pt: 'Limpeza e Organização',
+    description_en: 'Keeping our space and ourselves tidy.',
+    description_pt: 'Manter nosso espaço e a nós mesmos arrumados.',
+    icon: <SparklesIcon />,
+    color: 'bg-cyan-100',
+    hoverColor: 'hover:bg-cyan-200'
   },
 ];

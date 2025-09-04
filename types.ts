@@ -11,6 +11,17 @@ export interface Philosopher {
   hoverColor: string;
 }
 
+export interface Theme {
+  id: string;
+  name_en: string;
+  name_pt: string;
+  description_en: string;
+  description_pt: string;
+  icon: JSX.Element;
+  color: string;
+  hoverColor: string;
+}
+
 export interface StoryContent {
   title_en: string;
   paragraphs_en: string[];

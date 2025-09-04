@@ -44,7 +44,7 @@ const StoryDisplay: React.FC<StoryDisplayProps> = ({ story, translations }) => {
 
   useEffect(() => {
     return () => {
-      if (window.speechSynthesis.speaking) {
+      if (window.speechSynthesis && window.speechSynthesis.speaking) {
         window.speechSynthesis.cancel();
       }
     };
@@ -68,6 +68,19 @@ const StoryDisplay: React.FC<StoryDisplayProps> = ({ story, translations }) => {
     
     const utterance = new SpeechSynthesisUtterance(textToSpeak);
     utterance.lang = lang === 'en' ? 'en-GB' : 'pt-BR';
+
+    // For Portuguese, try to find a more natural voice
+    if (lang === 'pt') {
+        const voices = window.speechSynthesis.getVoices();
+        // This is a prioritized search for a higher quality Brazilian Portuguese voice.
+        const preferredVoice = voices.find(voice => voice.name === 'Google português do Brasil') || 
+                               voices.find(voice => voice.lang === 'pt-BR' && voice.name.includes('Google')) ||
+                               voices.find(voice => voice.name === 'Luciana') || // Common on some systems
+                               voices.find(voice => voice.lang === 'pt-BR'); // Fallback to the first available pt-BR voice
+        if (preferredVoice) {
+            utterance.voice = preferredVoice;
+        }
+    }
     
     const setSpeaking = lang === 'en' ? setIsSpeakingEn : setIsSpeakingPt;
     utterance.onstart = () => setSpeaking(true);

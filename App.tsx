@@ -2,10 +2,11 @@ import React, { useState, useCallback } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import PhilosopherSelector from './components/VirtueSelector';
+import ThemeSelector from './components/ThemeSelector';
 import StoryDisplay from './components/StoryDisplay';
 import LoadingSpinner from './components/LoadingSpinner';
 import { generateStory } from './services/geminiService';
-import { Philosopher, StoryContent, StoryCustomization } from './types';
+import { Philosopher, StoryContent, StoryCustomization, Theme } from './types';
 import { translations } from './constants';
 
 type Language = 'en' | 'pt';
@@ -26,6 +27,7 @@ const SectionWrapper: React.FC<{ title: string; description: string; number: num
 const App: React.FC = () => {
   const [language, setLanguage] = useState<Language>('en');
   const [selectedPhilosopher, setSelectedPhilosopher] = useState<Philosopher | null>(null);
+  const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
   const [age, setAge] = useState<string>('');
   const [childName, setChildName] = useState<string>('');
   
@@ -37,7 +39,7 @@ const App: React.FC = () => {
 
   const handleGenerateStory = useCallback(async () => {
     const childAge = parseInt(age, 10);
-    if (!selectedPhilosopher || !age || !childName || isNaN(childAge) || childAge < 2 || childAge > 12) {
+    if (!selectedPhilosopher || !selectedTheme || !age || !childName || isNaN(childAge) || childAge < 2 || childAge > 12) {
       setError(t.errorPrefix);
       return;
     }
@@ -52,7 +54,7 @@ const App: React.FC = () => {
     };
 
     try {
-      const generatedStory = await generateStory(selectedPhilosopher, customization);
+      const generatedStory = await generateStory(selectedPhilosopher, selectedTheme, customization);
       setStory(generatedStory);
     } catch (err: any)
     {
@@ -60,7 +62,7 @@ const App: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [selectedPhilosopher, age, childName, t.errorPrefix]);
+  }, [selectedPhilosopher, selectedTheme, age, childName, t.errorPrefix]);
 
   const inputClasses = "w-full p-3 text-md border-2 border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-300 focus:border-amber-500 transition duration-300";
 
@@ -80,10 +82,14 @@ const App: React.FC = () => {
             <PhilosopherSelector selectedPhilosopher={selectedPhilosopher} onSelectPhilosopher={setSelectedPhilosopher} language={language} />
         </SectionWrapper>
 
+        <SectionWrapper number={3} title={t.themeTitle} description={t.themeDescription}>
+            <ThemeSelector selectedTheme={selectedTheme} onSelectTheme={setSelectedTheme} language={language} />
+        </SectionWrapper>
+
         <div className="text-center mt-10">
           <button
             onClick={handleGenerateStory}
-            disabled={isLoading || !selectedPhilosopher || !age || !childName}
+            disabled={isLoading || !selectedPhilosopher || !selectedTheme || !age || !childName}
             className="bg-amber-500 text-white font-bold text-xl px-12 py-4 rounded-full shadow-lg hover:bg-amber-600 transition-transform transform hover:scale-105 duration-300 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:scale-100"
           >
             {isLoading ? t.generatingButton : t.generateButton}

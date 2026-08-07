@@ -4,9 +4,32 @@
 
 # 🪄 Contos Mágicos | Magic Tales
 
-Gerador de **contos de fadas mágicos e bilíngues (PT-BR / EN-GB)** para crianças, alimentado pelo Google Gemini.
+Gerador de **contos de fadas mágicos e bilíngues (PT-BR / EN-GB)** para crianças, alimentado por IA.
 
 Onde a sabedoria antiga encontra mundos encantados: a criança escolhe seu protagonista, um **filósofo como guia**, um **companheiro mágico** (dragão, unicórnio, coruja, fada ou raposa), a **lição do dia** e o **tamanho da aventura** — e a IA tece uma história original com árvores que brilham com luz própria, moral da história, narração por voz e exportação em texto.
+
+## 💸 API 100% gratuita — sem chave
+
+O app funciona **sem nenhuma chave de API** usando a API pública gratuita **[Pollinations.ai](https://pollinations.ai)** — é só rodar e gerar histórias.
+
+Opcionalmente, se você definir `GEMINI_API_KEY` no `.env.local`, o app usa automaticamente o **Google Gemini 2.5 Flash** (também com camada gratuita no Google AI Studio) para histórias com saída estruturada ainda mais consistente.
+
+### Provedores (variável `LLM_PROVIDER`)
+
+| Valor | Comportamento |
+|-------|---------------|
+| `auto` (padrão) | Usa Gemini se `GEMINI_API_KEY` existir; senão, usa Pollinations (grátis, sem chave) |
+| `pollinations` | Sempre usa a API gratuita Pollinations.ai |
+| `gemini` | Sempre usa Gemini (exige `GEMINI_API_KEY`) |
+
+### Variáveis de ambiente
+
+```
+GEMINI_API_KEY=        # (opcional) chave do Google AI Studio
+GEMINI_MODEL=gemini-2.5-flash   # (opcional) modelo Gemini
+POLLINATIONS_MODEL=openai       # (opcional) modelo Pollinations
+LLM_PROVIDER=auto               # (opcional) auto | pollinations | gemini
+```
 
 ## ✨ Recursos
 
@@ -29,27 +52,23 @@ Onde a sabedoria antiga encontra mundos encantados: a criança escolhe seu prota
    ```bash
    npm install
    ```
-2. Crie um arquivo `.env.local` com sua chave do Gemini:
-   ```
-   GEMINI_API_KEY=sua-chave-aqui
-   ```
-   (Opcional) escolha o modelo de geração:
-   ```
-   GEMINI_MODEL=gemini-2.5-flash
-   ```
-3. Rode o app:
+2. Rode o app — **não precisa de chave nenhuma**:
    ```bash
    npm run dev
+   ```
+3. (Opcional) para usar o Gemini em vez da API gratuita, crie um `.env.local`:
+   ```
+   GEMINI_API_KEY=sua-chave-aqui
    ```
 
 ## 🧠 O modelo
 
-A geração fica em [`services/geminiService.ts`](services/geminiService.ts):
+A geração fica em [`services/storyService.ts`](services/storyService.ts):
 
-- Modelo padrão: `gemini-2.5-flash` (configurável via `GEMINI_MODEL`)
-- Saída estruturada em JSON (`responseSchema`): título, parágrafos e moral em PT-BR e EN-GB
+- **Padrão:** API gratuita Pollinations.ai (sem chave, funciona no navegador)
+- **Opcional:** Gemini 2.5 Flash com `responseSchema` (saída JSON estruturada) e `safetySettings`
 - Prompt especializado: mundo mágico inspirado em Tolkien (árvores luminosas como Laurelin e Telperion), lição conectada à virtude do filósofo, efeito "uma boa ação leva a outra" e final feliz
-- `safetySettings` para bloquear conteúdo inadequado
+- Parsing tolerante: extrai o JSON da resposta mesmo com cercas de código (```json)
 
 ---
 

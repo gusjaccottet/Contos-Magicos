@@ -5,9 +5,11 @@ export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
     return {
       define: {
-        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.GEMINI_MODEL': JSON.stringify(env.GEMINI_MODEL || '')
+        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY || ''),
+        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY || ''),
+        'process.env.GEMINI_MODEL': JSON.stringify(env.GEMINI_MODEL || ''),
+        'process.env.POLLINATIONS_MODEL': JSON.stringify(env.POLLINATIONS_MODEL || ''),
+        'process.env.LLM_PROVIDER': JSON.stringify(env.LLM_PROVIDER || '')
       },
       resolve: {
         alias: {

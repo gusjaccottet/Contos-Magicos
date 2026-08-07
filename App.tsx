@@ -7,7 +7,7 @@ import ThemeSelector from './components/ThemeSelector';
 import LengthSelector from './components/LengthSelector';
 import StoryDisplay from './components/StoryDisplay';
 import LoadingSpinner from './components/LoadingSpinner';
-import { generateStory } from './services/geminiService';
+import { generateStory } from './services/storyService';
 import { Philosopher, StoryContent, StoryCustomization, Theme, MagicCompanion, StoryLength } from './types';
 import { translations } from './constants';
 

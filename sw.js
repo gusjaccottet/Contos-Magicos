@@ -1,4 +1,4 @@
-const CACHE_NAME = 'wise-tales-cache-v1';
+const CACHE_NAME = 'contos-magicos-cache-v1';
 const urlsToCache = [
   '/',
   '/index.html',

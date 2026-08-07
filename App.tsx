@@ -2,11 +2,13 @@ import React, { useState, useCallback } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import PhilosopherSelector from './components/VirtueSelector';
+import CompanionSelector from './components/CompanionSelector';
 import ThemeSelector from './components/ThemeSelector';
+import LengthSelector from './components/LengthSelector';
 import StoryDisplay from './components/StoryDisplay';
 import LoadingSpinner from './components/LoadingSpinner';
 import { generateStory } from './services/geminiService';
-import { Philosopher, StoryContent, StoryCustomization, Theme } from './types';
+import { Philosopher, StoryContent, StoryCustomization, Theme, MagicCompanion, StoryLength } from './types';
 import { translations } from './constants';
 
 type Language = 'en' | 'pt';
@@ -27,10 +29,12 @@ const SectionWrapper: React.FC<{ title: string; description: string; number: num
 const App: React.FC = () => {
   const [language, setLanguage] = useState<Language>('en');
   const [selectedPhilosopher, setSelectedPhilosopher] = useState<Philosopher | null>(null);
+  const [selectedCompanion, setSelectedCompanion] = useState<MagicCompanion | null>(null);
   const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
+  const [storyLength, setStoryLength] = useState<StoryLength>('medium');
   const [age, setAge] = useState<string>('');
   const [childName, setChildName] = useState<string>('');
-  
+
   const [story, setStory] = useState<StoryContent | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -39,7 +43,7 @@ const App: React.FC = () => {
 
   const handleGenerateStory = useCallback(async () => {
     const childAge = parseInt(age, 10);
-    if (!selectedPhilosopher || !selectedTheme || !age || !childName || isNaN(childAge) || childAge < 2 || childAge > 12) {
+    if (!selectedPhilosopher || !selectedCompanion || !selectedTheme || !age || !childName || isNaN(childAge) || childAge < 2 || childAge > 12) {
       setError(t.errorPrefix);
       return;
     }
@@ -51,6 +55,8 @@ const App: React.FC = () => {
     const customization: StoryCustomization = {
       age: childAge,
       childName,
+      companion: selectedCompanion,
+      length: storyLength,
     };
 
     try {
@@ -62,7 +68,7 @@ const App: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [selectedPhilosopher, selectedTheme, age, childName, t.errorPrefix]);
+  }, [selectedPhilosopher, selectedCompanion, selectedTheme, age, childName, storyLength, t.errorPrefix]);
 
   const inputClasses = "w-full p-3 text-md border-2 border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-300 focus:border-amber-500 transition duration-300";
 
@@ -70,7 +76,7 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-amber-50 text-gray-800">
       <Header language={language} setLanguage={setLanguage} translations={{ headerTitle: t.headerTitle, headerSubtitle: t.headerSubtitle }} />
       <main className="container mx-auto px-4 py-8 max-w-5xl">
-        
+
         <SectionWrapper number={1} title={t.protagonistTitle} description={t.protagonistDescription}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
               <input type="text" value={childName} onChange={(e) => setChildName(e.target.value)} placeholder={t.childNamePlaceholder} className={`${inputClasses} text-center`} />
@@ -82,14 +88,22 @@ const App: React.FC = () => {
             <PhilosopherSelector selectedPhilosopher={selectedPhilosopher} onSelectPhilosopher={setSelectedPhilosopher} language={language} />
         </SectionWrapper>
 
-        <SectionWrapper number={3} title={t.themeTitle} description={t.themeDescription}>
+        <SectionWrapper number={3} title={t.companionTitle} description={t.companionDescription}>
+            <CompanionSelector selectedCompanion={selectedCompanion} onSelectCompanion={setSelectedCompanion} language={language} />
+        </SectionWrapper>
+
+        <SectionWrapper number={4} title={t.themeTitle} description={t.themeDescription}>
             <ThemeSelector selectedTheme={selectedTheme} onSelectTheme={setSelectedTheme} language={language} />
+        </SectionWrapper>
+
+        <SectionWrapper number={5} title={t.lengthTitle} description={t.lengthDescription}>
+            <LengthSelector selectedLength={storyLength} onSelectLength={setStoryLength} language={language} />
         </SectionWrapper>
 
         <div className="text-center mt-10">
           <button
             onClick={handleGenerateStory}
-            disabled={isLoading || !selectedPhilosopher || !selectedTheme || !age || !childName}
+            disabled={isLoading || !selectedPhilosopher || !selectedCompanion || !selectedTheme || !age || !childName}
             className="bg-amber-500 text-white font-bold text-xl px-12 py-4 rounded-full shadow-lg hover:bg-amber-600 transition-transform transform hover:scale-105 duration-300 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:scale-100"
           >
             {isLoading ? t.generatingButton : t.generateButton}
@@ -100,10 +114,11 @@ const App: React.FC = () => {
         <div className="mt-12">
           {isLoading && <LoadingSpinner language={language} />}
           {!isLoading && story && (
-            <StoryDisplay 
-                story={story} 
+            <StoryDisplay
+                story={story}
                 translations={{
                     storyTitle: t.storyTitle,
+                    moralLabel: t.moralLabel,
                     listen_en: t.listen_en,
                     stop_en: t.stop_en,
                     listen_pt: t.listen_pt,
@@ -111,6 +126,9 @@ const App: React.FC = () => {
                     view_en: t.view_en,
                     view_pt: t.view_pt,
                     view_split: t.view_split,
+                    copyStory: t.copyStory,
+                    copiedStory: t.copiedStory,
+                    downloadStory: t.downloadStory,
                 }}
             />
           )}

@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 
 const messages = {
     en: [
-        "The philosophers are gathering their thoughts...",
-        "Weaving wisdom into a tale...",
-        "Polishing the paragraphs...",
+        "The guardians of magic are gathering their thoughts...",
+        "Weaving enchantment into a tale...",
+        "Polishing the sparkles and spells...",
         "Almost ready! Your story is on its way."
     ],
     pt: [
-        "Os filósofos estão reunindo seus pensamentos...",
-        "Tecendo sabedoria em um conto...",
-        "Polindo os parágrafos...",
+        "Os guardiões da magia estão reunindo seus pensamentos...",
+        "Tecendo encantamentos em um conto...",
+        "Polindo os brilhos e feitiços...",
         "Quase pronto! Sua história está a caminho."
     ]
 };

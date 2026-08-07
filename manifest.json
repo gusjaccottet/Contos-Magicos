@@ -1,7 +1,7 @@
 {
-  "name": "Wise Tales for Kids",
-  "short_name": "Wise Tales",
-  "description": "Generate charming animated stories for children, with Greek philosophers as guides. Select a philosopher, enter the child's age, and watch ancient wisdom come to life in a magical tale.",
+  "name": "Contos Mágicos",
+  "short_name": "Contos Mágicos",
+  "description": "Gere contos de fadas mágicos e bilíngues (PT/EN) para crianças, com filósofos como guias, companheiros mágicos e lições de vida. Generate magical bilingual tales for kids, with philosophers as guides and magical companions.",
   "icons": [
     {
       "src": "/icon-192.png",

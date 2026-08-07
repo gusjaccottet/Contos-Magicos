@@ -1,23 +1,28 @@
 import React from 'react';
-import { Philosopher, Theme } from './types';
+import { Philosopher, Theme, MagicCompanion, StoryLengthOption } from './types';
 
 // UI Translations
 export const translations = {
   en: {
-    headerTitle: "Wise Tales for Kids",
-    headerSubtitle: "The magic of Greek philosophy in enchanting stories",
+    headerTitle: "Magic Tales",
+    headerSubtitle: "Where ancient wisdom meets enchanted worlds",
     protagonistTitle: "The Protagonist",
-    protagonistDescription: "Who is this magical story for?",
+    protagonistDescription: "Who is this magical story about?",
     childNamePlaceholder: "Child's Name",
     agePlaceholder: "Age (2-12)",
     guideTitle: "The Guide of Wisdom",
-    guideDescription: "Who will guide the hero or heroine in our story?",
+    guideDescription: "Who will guide our hero through the enchanted lands?",
+    companionTitle: "The Magic Companion",
+    companionDescription: "Choose the magical friend who will join the adventure",
     themeTitle: "The Lesson of the Day",
     themeDescription: "What valuable lesson will our hero learn today?",
-    generateButton: "Generate Story!",
-    generatingButton: "Creating Magic...",
-    errorPrefix: "Please fill in the child's name, a valid age (2-12), choose a philosopher, and select a theme.",
+    lengthTitle: "Adventure Length",
+    lengthDescription: "How long should your magical journey be?",
+    generateButton: "Weave the Tale!",
+    generatingButton: "Casting Magic...",
+    errorPrefix: "Please fill in the child's name, a valid age (2-12), choose a philosopher, a companion, and a theme.",
     storyTitle: "Your Magical Story",
+    moralLabel: "Moral of the Story",
     listen_en: "Listen to Story",
     stop_en: "Stop Narration",
     listen_pt: "Ouvir a História",
@@ -25,23 +30,31 @@ export const translations = {
     view_en: "English",
     view_pt: "Português",
     view_split: "Side-by-Side",
-    footer: `© ${new Date().getFullYear()} Wise Tales. Created with inspiration and AI.`
+    copyStory: "Copy Story",
+    copiedStory: "Copied!",
+    downloadStory: "Download .txt",
+    footer: `© ${new Date().getFullYear()} Magic Tales. Woven with inspiration and AI.`
   },
   pt: {
-    headerTitle: "Contos Sábios para Crianças",
-    headerSubtitle: "A magia da filosofia grega em histórias encantadoras",
+    headerTitle: "Contos Mágicos",
+    headerSubtitle: "Onde a sabedoria antiga encontra mundos encantados",
     protagonistTitle: "O Protagonista",
-    protagonistDescription: "Para quem é esta história mágica?",
+    protagonistDescription: "Sobre quem é esta história mágica?",
     childNamePlaceholder: "Nome da Criança",
     agePlaceholder: "Idade (2-12)",
     guideTitle: "O Guia da Sabedoria",
-    guideDescription: "Quem guiará o herói ou heroína em nossa história?",
+    guideDescription: "Quem guiará nosso herói ou heroína pelas terras encantadas?",
+    companionTitle: "O Companheiro Mágico",
+    companionDescription: "Escolha o amigo mágico que acompanhará a aventura",
     themeTitle: "A Lição do Dia",
     themeDescription: "Que lição valiosa nosso herói ou heroína aprenderá hoje?",
-    generateButton: "Gerar História!",
-    generatingButton: "Criando Magia...",
-    errorPrefix: "Por favor, preencha o nome da criança, uma idade válida (2-12), escolha um filósofo e selecione um tema.",
+    lengthTitle: "Tamanho da Aventura",
+    lengthDescription: "Quão longa deve ser a sua jornada mágica?",
+    generateButton: "Tecer o Conto!",
+    generatingButton: "Lançando Magia...",
+    errorPrefix: "Por favor, preencha o nome da criança, uma idade válida (2-12), escolha um filósofo, um companheiro e um tema.",
     storyTitle: "Sua História Mágica",
+    moralLabel: "Moral da História",
     listen_en: "Listen to Story",
     stop_en: "Stop Narration",
     listen_pt: "Ouvir a História",
@@ -49,10 +62,14 @@ export const translations = {
     view_en: "Inglês",
     view_pt: "Português",
     view_split: "Lado a Lado",
-    footer: `© ${new Date().getFullYear()} Contos Sábios. Criado com inspiração e IA.`
+    copyStory: "Copiar História",
+    copiedStory: "Copiado!",
+    downloadStory: "Baixar .txt",
+    footer: `© ${new Date().getFullYear()} Contos Mágicos. Tecido com inspiração e IA.`
   }
 };
 
+export type TranslationKey = keyof typeof translations.en;
 
 // Heroicons - https://heroicons.com/
 const HeartIcon = () => (
@@ -113,6 +130,24 @@ const SparklesIcon = () => (
     </svg>
 );
 
+const GiftIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M21 11.25v8.25a1.5 1.5 0 0 1-1.5 1.5H4.5a1.5 1.5 0 0 1-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 1 0 9.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1 1 14.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
+    </svg>
+);
+
+const FireIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 18a3.75 3.75 0 0 0 .495-7.468 5.99 5.99 0 0 0-1.925 3.547 5.975 5.975 0 0 1-2.133-1.001A3.75 3.75 0 0 0 12 18Z" />
+    </svg>
+);
+
+const WandIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.452-2.452L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.452-2.452L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.452 2.452L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.452 2.452ZM18.259 15.904 18 14.25l-.259 1.654a3.375 3.375 0 0 0-2.452 2.452L14.25 18l1.036.259a3.375 3.375 0 0 0 2.452 2.452L18 21.75l.259-1.035a3.375 3.375 0 0 0 2.452-2.452L21.75 18l-1.035-.259a3.375 3.375 0 0 0-2.452-2.452Z" />
+    </svg>
+);
 
 export const PHILOSOPHERS: Philosopher[] = [
   {
@@ -177,6 +212,59 @@ export const PHILOSOPHERS: Philosopher[] = [
   },
 ];
 
+export const COMPANIONS: MagicCompanion[] = [
+  {
+    id: 'dragon',
+    name_en: 'Spark the Dragon',
+    name_pt: 'Faísca, o Dragãozinho',
+    emoji: '🐉',
+    description_en: 'A little dragon who guards the ember of courage.',
+    description_pt: 'Um dragãozinho que guarda a brasa da coragem.',
+    color: 'bg-red-100',
+    hoverColor: 'hover:bg-red-200'
+  },
+  {
+    id: 'unicorn',
+    name_en: 'Luna the Unicorn',
+    name_pt: 'Luna, a Unicórnia',
+    emoji: '🦄',
+    description_en: 'A unicorn whose horn lights the path of friendship.',
+    description_pt: 'Uma unicórnia cujo chifre ilumina o caminho da amizade.',
+    color: 'bg-purple-100',
+    hoverColor: 'hover:bg-purple-200'
+  },
+  {
+    id: 'owl',
+    name_en: 'Sage the Owl',
+    name_pt: 'Sábia, a Coruja',
+    emoji: '🦉',
+    description_en: 'A wise owl who knows the questions that matter.',
+    description_pt: 'Uma coruja sábia que conhece as perguntas que importam.',
+    color: 'bg-blue-100',
+    hoverColor: 'hover:bg-blue-200'
+  },
+  {
+    id: 'fairy',
+    name_en: 'Pip the Fairy',
+    name_pt: 'Pip, a Fadinha',
+    emoji: '🧚',
+    description_en: 'A tiny fairy with a heart full of kindness.',
+    description_pt: 'Uma fadinha com o coração cheio de bondade.',
+    color: 'bg-pink-100',
+    hoverColor: 'hover:bg-pink-200'
+  },
+  {
+    id: 'fox',
+    name_en: 'Nina the Fox',
+    name_pt: 'Nina, a Raposa',
+    emoji: '🦊',
+    description_en: 'A clever fox who always finds the honest way.',
+    description_pt: 'Uma raposa esperta que sempre encontra o caminho honesto.',
+    color: 'bg-orange-100',
+    hoverColor: 'hover:bg-orange-200'
+  },
+];
+
 export const THEMES: Theme[] = [
   {
     id: 'sharing',
@@ -227,5 +315,59 @@ export const THEMES: Theme[] = [
     icon: <SparklesIcon />,
     color: 'bg-cyan-100',
     hoverColor: 'hover:bg-cyan-200'
+  },
+  {
+    id: 'gratitude',
+    name_en: 'Gratitude',
+    name_pt: 'Gratidão',
+    description_en: 'Being thankful for the little wonders.',
+    description_pt: 'Ser grato pelas pequenas maravilhas.',
+    icon: <GiftIcon />,
+    color: 'bg-rose-100',
+    hoverColor: 'hover:bg-rose-200'
+  },
+  {
+    id: 'perseverance',
+    name_en: 'Perseverance',
+    name_pt: 'Perseverança',
+    description_en: 'Trying again and again until you succeed.',
+    description_pt: 'Tentar de novo e de novo até conseguir.',
+    icon: <FireIcon />,
+    color: 'bg-lime-100',
+    hoverColor: 'hover:bg-lime-200'
+  },
+  {
+    id: 'kindness',
+    name_en: 'Kindness',
+    name_pt: 'Bondade',
+    description_en: 'Small good deeds that brighten the world.',
+    description_pt: 'Pequenas boas ações que iluminam o mundo.',
+    icon: <WandIcon />,
+    color: 'bg-fuchsia-100',
+    hoverColor: 'hover:bg-fuchsia-200'
+  },
+];
+
+export const STORY_LENGTHS: StoryLengthOption[] = [
+  {
+    id: 'short',
+    label_en: 'Short',
+    label_pt: 'Curta',
+    description_en: 'About 3 short paragraphs',
+    description_pt: 'Cerca de 3 parágrafos curtos',
+  },
+  {
+    id: 'medium',
+    label_en: 'Medium',
+    label_pt: 'Média',
+    description_en: 'About 5 paragraphs',
+    description_pt: 'Cerca de 5 parágrafos',
+  },
+  {
+    id: 'long',
+    label_en: 'Long',
+    label_pt: 'Longa',
+    description_en: 'About 7 paragraphs',
+    description_pt: 'Cerca de 7 parágrafos',
   },
 ];

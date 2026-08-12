@@ -1,11 +1,15 @@
 import { GoogleGenAI, GenerateContentResponse, Type } from "@google/genai";
 import { Philosopher, StoryContent, StoryCustomization, Theme } from '../types';
 
-if (!process.env.API_KEY) {
-    throw new Error("API_KEY environment variable not set");
-}
-
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const getClient = (): GoogleGenAI => {
+  const apiKey = process.env.API_KEY || process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    throw new Error(
+      "Defina GEMINI_API_KEY no arquivo .env.local (veja .env.example)."
+    );
+  }
+  return new GoogleGenAI({ apiKey });
+};
 
 const storyGenerationModel = 'gemini-2.5-flash';
 
@@ -23,7 +27,7 @@ The story must have a creative title and be divided into paragraphs. Do not use 
 IMPORTANT: Generate the story in two languages: British English (en_gb) and Brazilian Portuguese (pt_br). Provide both versions in the response.`;
 
   try {
-    const response: GenerateContentResponse = await ai.models.generateContent({
+    const response: GenerateContentResponse = await getClient().models.generateContent({
       model: storyGenerationModel,
       contents: storyPrompt,
       config: {
@@ -42,7 +46,10 @@ IMPORTANT: Generate the story in two languages: British English (en_gb) and Braz
       }
     });
 
-    const jsonText = response.text.trim();
+    const jsonText = response.text?.trim();
+    if (!jsonText) {
+      throw new Error("API response in an unexpected format.");
+    }
     const parsedResponse = JSON.parse(jsonText);
     
     if (!parsedResponse.title_en || !parsedResponse.paragraphs_en || !parsedResponse.title_pt || !parsedResponse.paragraphs_pt) {

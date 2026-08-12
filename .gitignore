@@ -12,13 +12,23 @@ dist
 dist-ssr
 *.local
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
+# Editor / Visual Studio
+.vs/
+*.user
 *.suo
+*.userosscache
+*.sln.docstates
 *.ntvs*
 *.njsproj
-*.sln
+[Bb]in/
+[Oo]bj/
+.idea
+.DS_Store
 *.sw?
+
+# VS Code (manter configs compartilhadas)
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+!.vscode/settings.json

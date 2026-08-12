@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "Contos Magicos (Vite)": {
+      "commandName": "Project",
+      "commandLineArgs": "run dev",
+      "launchBrowser": true,
+      "launchUrl": "http://localhost:5173",
+      "environmentVariables": {
+        "NODE_ENV": "development"
+      },
+      "applicationUrl": "http://localhost:5173",
+      "publishAllPorts": false
+    }
+  }
+}

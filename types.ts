@@ -1,3 +1,5 @@
+import type { ReactElement } from 'react';
+
 export interface Philosopher {
   id: string;
   name_en: string;
@@ -6,7 +8,7 @@ export interface Philosopher {
   virtue_pt: string;
   description_en: string;
   description_pt: string;
-  icon: JSX.Element;
+  icon: ReactElement;
   color: string;
   hoverColor: string;
 }
@@ -17,7 +19,7 @@ export interface Theme {
   name_pt: string;
   description_en: string;
   description_pt: string;
-  icon: JSX.Element;
+  icon: ReactElement;
   color: string;
   hoverColor: string;
 }

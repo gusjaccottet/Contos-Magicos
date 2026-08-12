@@ -11,6 +11,7 @@
     ],
     "skipLibCheck": true,
     "types": [
+      "vite/client",
       "node"
     ],
     "moduleResolution": "bundler",
@@ -24,6 +25,16 @@
       ]
     },
     "allowImportingTsExtensions": true,
-    "noEmit": true
-  }
+    "noEmit": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": [
+    "*.ts",
+    "*.tsx",
+    "components/**/*.ts",
+    "components/**/*.tsx",
+    "services/**/*.ts",
+    "vite-env.d.ts"
+  ]
 }
